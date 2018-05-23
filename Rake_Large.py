@@ -2,6 +2,7 @@ import jieba
 import jieba.posseg as pseg
 import operator
 import json
+from collections import Counter
 
 # 增加尝试图库
 
@@ -20,6 +21,12 @@ class Word():
 
     def getChar(self):
         return self.char
+
+    def updateFreq(self):
+        self.freq += 1
+
+    def getFreq(self):
+        return self.freq
 
 def notNumStr(instr):
     for item in instr:
@@ -54,49 +61,79 @@ swLibList = [line.rstrip('\n') for line in open("中文停用词表(1208个).txt
 conjLibList = [line.rstrip('\n') for line in open("中文分隔词词库.txt",'r')]
 
 # Obtain a list of individual words
-fp = open("文本1.txt",'r')
-rawText = fp.read()
+fp = open("文本7.txt",'r')
+rawText = fp.read().replace(' ', '').replace('\n', '。')
 fp.close()
 # rawText = readSingleTestCases("14_20180514_1600_channel_0.txt")
 # rawtextList = jieba.cut(rawText)
 rawtextList = pseg.cut(rawText)
 
+
 # Construct List of Phrases and Preliminary textList
-phraseList = [""]
 textList = []
-outputList = []
+listofSingleWord = dict()
 lastWord = ''
 for eachWord, flag in rawtextList:
-    if eachWord in conjLibList or not notNumStr(eachWord):
+    if eachWord in conjLibList or not notNumStr(eachWord) or eachWord in swLibList or flag == 'v' or eachWord == '\n':
         if lastWord != '|':
             textList.append("|")
             lastWord = "|"
     elif eachWord not in swLibList and flag != 'v' and eachWord != '\n':
         textList.append(eachWord)
-        outputList.append(eachWord)
+        if eachWord not in listofSingleWord:
+            listofSingleWord[eachWord] = Word(eachWord)
         lastWord = ''
 
-print(textList)
+# Construct List of list that has phrases as wrds
+newList = []
+tempList = []
+for everyWord in textList:
+    if everyWord != '|':
+        tempList.append(everyWord)
+    else:
+        newList.append(tempList)
+        tempList = []
 
-if False:
-    # Construct Word to Score Matrix
-    listOfWords = dict()
-    for phrase in textList:
-            for char in phrase:
-                if char not in listOfWords:
-                    listOfWords[char] = Word(char,1,len(phrase))
-                else:
-                    listOfWords[char].updateOccur(len(phrase))
 
-    # Calculate Phrase Matrix
-    outputList = dict()
-    for phrase in textList:
-        if len(phrase) > 1:
-            score = 0
-            for char in phrase:
-                score += (listOfWords[char]).returnScore()
-            outputList[phrase] = score / len(phrase)
+tempStr = ''
+for everyWord in textList:
+    if everyWord != '|':
+        tempStr += everyWord + '|'
+    else:
+        if tempStr[:-1] not in listofSingleWord:
+            listofSingleWord[tempStr[:-1]] = Word(tempStr[:-1])
+            tempStr = ''
 
-    # Sort
-    sorted_list = sorted(outputList.items(), key = operator.itemgetter(1), reverse = True)
-    print(sorted_list[:10])
+# Update the entire List
+for everyPhrase in newList:
+    res = ''
+    for everyWord in everyPhrase:
+        listofSingleWord[everyWord].updateOccur(len(everyPhrase))
+        res += everyWord + '|'
+    phraseKey = res[:-1]
+    if phraseKey not in listofSingleWord:
+        listofSingleWord[phraseKey] = Word(phraseKey)
+    else:
+        listofSingleWord[phraseKey].updateFreq()
+
+# Get score for entire Set
+outputList = dict()
+for everyPhrase in newList:
+
+    if len(everyPhrase) > 5:
+        continue
+    score = 0
+    phraseString = ''
+    outStr = ''
+    for everyWord in everyPhrase:
+        score += listofSingleWord[everyWord].returnScore()
+        phraseString += everyWord + '|'
+        outStr += everyWord
+    phraseKey = phraseString[:-1]
+    if listofSingleWord[phraseKey].getFreq() < 2:
+        continue
+
+    outputList[outStr] = score
+
+sorted_list = sorted(outputList.items(), key = operator.itemgetter(1), reverse = True)
+print(sorted_list[:10])

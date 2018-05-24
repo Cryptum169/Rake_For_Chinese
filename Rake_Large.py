@@ -68,21 +68,29 @@ fp.close()
 # rawtextList = jieba.cut(rawText)
 rawtextList = pseg.cut(rawText)
 
-
 # Construct List of Phrases and Preliminary textList
 textList = []
 listofSingleWord = dict()
 lastWord = ''
+stopPrty = ['m','x','uj','ul','mq','u','v','f'] # ['v', 'vi', 'vl']
+meaningfulCount = 0
+checklist = []
 for eachWord, flag in rawtextList:
-    if eachWord in conjLibList or not notNumStr(eachWord) or eachWord in swLibList or flag == 'v' or eachWord == '\n':
+    checklist.append([eachWord,flag])
+    if eachWord in conjLibList or not notNumStr(eachWord) or eachWord in swLibList or flag in stopPrty or eachWord == '\n':
         if lastWord != '|':
             textList.append("|")
             lastWord = "|"
-    elif eachWord not in swLibList and flag != 'v' and eachWord != '\n':
+    elif eachWord not in swLibList and eachWord != '\n':
         textList.append(eachWord)
+        meaningfulCount += 1
         if eachWord not in listofSingleWord:
             listofSingleWord[eachWord] = Word(eachWord)
         lastWord = ''
+
+    if eachWord == '索尼':
+        print(flag)
+print(checklist)
 
 # Construct List of list that has phrases as wrds
 newList = []
@@ -130,7 +138,8 @@ for everyPhrase in newList:
         phraseString += everyWord + '|'
         outStr += everyWord
     phraseKey = phraseString[:-1]
-    if listofSingleWord[phraseKey].getFreq() < 2:
+    freq = listofSingleWord[phraseKey].getFreq()
+    if freq / meaningfulCount < 0.01 and freq < 3 :
         continue
 
     outputList[outStr] = score

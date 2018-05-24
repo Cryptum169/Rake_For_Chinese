@@ -17,6 +17,7 @@ Generation of "Word" and "Phrases" as needed by RAKE algorithm sought help from 
 Take news article at this link for example: http://www.pingwest.com/sony-expo-2018-at-chengdu/
 Sample output in the following, with the output of this implementation in the last line
 
+```
 TextRank4ZH-关键词：
 索尼, 索粉, 粉丝, 上, 业务, 破产, sony, 人, 会, 产品
 jieba-关键词：
@@ -29,6 +30,6 @@ jieba-关键短语：(N/A)
 KeyExtract-关键短语：（N/A）
 Rake4ZH-关键短语：
 名字——索尼魅力赏, 游戏作品软件销量, 高质量消费电子品产, 索尼游戏业务正式回, 放心——,  游戏销量超,  全球销量超,  款精品 , 款游戏作品, 伙伴合作补完
-**Rake 中文关键短语/词
-平井一夫, 营业利润, 游戏, 正式, 明星, 总裁, 改革, 高桥洋, 中国, 利润**
-
+Rake 中文关键短语/词
+平井一夫, 营业利润, 游戏, 正式, 明星, 总裁, 改革, 高桥洋, 中国, 利润
+```

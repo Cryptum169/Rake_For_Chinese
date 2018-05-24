@@ -1,2 +1,2 @@
 # Discard Local Test Cases
-*.txt
+/data/testCase

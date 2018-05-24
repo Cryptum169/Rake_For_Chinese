@@ -55,10 +55,10 @@ def readSingleTestCases(testFile):
     return returnString
 
 # Construct Stopword Lib
-swLibList = [line.rstrip('\n') for line in open("中文停用词表(1208个).txt",'r')]
+swLibList = [line.rstrip('\n') for line in open("/data/stoplist/中文停用词表(1208个).txt",'r')]
 
 # Construct Phrase Deliminator Lib
-conjLibList = [line.rstrip('\n') for line in open("中文分隔词词库.txt",'r')]
+conjLibList = [line.rstrip('\n') for line in open("/data/stoplist/中文分隔词词库.txt",'r')]
 
 # Obtain a list of individual words
 fp = open("文本7.txt",'r')
@@ -88,10 +88,6 @@ for eachWord, flag in rawtextList:
             listofSingleWord[eachWord] = Word(eachWord)
         lastWord = ''
 
-    if eachWord == '索尼':
-        print(flag)
-print(checklist)
-
 # Construct List of list that has phrases as wrds
 newList = []
 tempList = []
@@ -101,7 +97,6 @@ for everyWord in textList:
     else:
         newList.append(tempList)
         tempList = []
-
 
 tempStr = ''
 for everyWord in textList:

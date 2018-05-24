@@ -10,12 +10,15 @@ Use RAKE algorithm to extract Keywords from Chinese text.
 
 ## Functional Overview
 RAKE Keyword Extraction is an algorithm that is by design corpus-independent and language-independent. In a nutshell, it calculates scores for words based on its independent occurrence and its occurrence in phrases, and then combine all scores for every word inside a phrase to get the score for the phrase, with some additional criterias to eliminate boundary conditions.
+
 This method however, cannot be directly applied to Chinese since first, there are no obvious word deliminators and second when we come to parsing phrases, there's more variety to it than that in English and other language with similar syntaxes.
+
 Generation of "Word" and "Phrases" as needed by RAKE algorithm sought help from another Chinese Text Segmentation package, Jieba. Jieba is used to cut raw texts into segments of word. Then the list is filter with PoS property, stopword and conjunction word list and punctuation list to parse phrases. 
 
 ## Sample Output
 Take news article at this link for example: http://www.pingwest.com/sony-expo-2018-at-chengdu/
-Sample output in the following, with the output of this implementation in the last line
+
+Sample output in the following, with the output of this implementation in the **last line**
 
 ```
 TextRank4ZH-关键词：

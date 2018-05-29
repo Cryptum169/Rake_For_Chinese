@@ -1,3 +1,15 @@
+# Rake 算法的中文应用
+这是一个对 Rose, S., Engel, D., Cramer, N., & Cowley, W. (2010). Automatic Keyword Extraction from Individual Documents. In M. W. Berry & J. Kogan (Eds.), Text Mining: Theory and Applications: John Wiley & Sons. 中提及的 Rapid Automatic Keyword Extraction 在中文上的应用, MIT License
+
+# 安装说明
+代码写于 Python 版本 3.6.5; 此应用使用了中文分词工具结巴 https://github.com/fxsjy/jieba 可用 `pip install jieba` 安装结巴。
+
+# 主要功能
+使用 RAKE 算法从中文段落中选取关键词
+
+## 功能概述
+
+
 # Rake_For_Chinese
 A Python implementation of the Rapid Automatic Keyword Extraction (RAKE) algorithm as described in: Rose, S., Engel, D., Cramer, N., & Cowley, W. (2010). Automatic Keyword Extraction from Individual Documents. In M. W. Berry & J. Kogan (Eds.), Text Mining: Theory and Applications: John Wiley & Sons.
 Codebase in MIT License
@@ -14,6 +26,13 @@ RAKE Keyword Extraction is an algorithm that is by design corpus-independent and
 This method however, cannot be directly applied to Chinese since first, there are no obvious word deliminators and second when we come to parsing phrases, there's more variety to it than that in English and other language with similar syntaxes.
 
 Generation of "Word" and "Phrases" as needed by RAKE algorithm sought help from another Chinese Text Segmentation package, Jieba. Jieba is used to cut raw texts into segments of word. Then the list is filter with PoS property, stopword and conjunction word list and punctuation list to parse phrases. 
+
+## Example Code
+```python
+import Rake_Large.py as rl
+text = "A block of Text"
+output = rl.run(text)
+```
 
 ## Sample Output
 Take news article at this link for example: http://www.pingwest.com/sony-expo-2018-at-chengdu/

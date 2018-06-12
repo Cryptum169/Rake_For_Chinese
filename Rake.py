@@ -12,6 +12,7 @@ import operator
 import json
 from collections import Counter
 
+
 # Data structure for holding data
 class Word():
     def __init__(self, char, freq = 0, deg = 0):
@@ -146,5 +147,7 @@ def run(rawText):
     return sorted_list[:10]
 
 if __name__ == '__main__':
-    result = run('data/testCase/文本1.txt')
-    print(result)
+    with open('data/testCase/文本1.txt','r') as fp:
+        text = fp.read()
+        result = run(text)
+        print(result)

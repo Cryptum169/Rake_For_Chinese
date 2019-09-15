@@ -66,9 +66,9 @@ def readSingleTestCases(testFile):
 
 def run(rawText):
     # Construct Stopword Lib
-    swLibList = [line.rstrip('\n') for line in open("textlibs/中文停用词表(1208个).txt",'r')]
+    swLibList = [line.rstrip('\n') for line in open("data/stoplist/中文停用词表(1208个).txt",'r')]
     # Construct Phrase Deliminator Lib
-    conjLibList = [line.rstrip('\n') for line in open("textlibs/中文分隔词词库.txt",'r')]
+    conjLibList = [line.rstrip('\n') for line in open("data/stoplist/中文分隔词词库.txt",'r')]
 
     # Cut Text
     rawtextList = pseg.cut(rawText)
